@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import com.mingjun.news.R;
 import com.mingjun.news.data.model.News;
 import com.mingjun.news.data.model.NewsCategory;
+import com.mingjun.news.data.remote.NewsRemoteDataSource;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
@@ -32,6 +33,7 @@ public class NewsFragment extends Fragment implements NewsContract.View {
 
     @AfterViews
     void init() {
+        mPresenter = new NewsListPresenter(new NewsRemoteDataSource(), this);
         mAdapter = new NewsRecyclerAdapter(null);
         mNewsListView.setAdapter(mAdapter);
     }
