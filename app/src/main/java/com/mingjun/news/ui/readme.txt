@@ -1,0 +1,1 @@
+including activities, fragments, dialogs, views,
