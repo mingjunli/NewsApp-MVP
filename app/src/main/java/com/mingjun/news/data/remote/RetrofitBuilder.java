@@ -44,23 +44,24 @@ public class RetrofitBuilder {
         OkHttpClient.Builder builder = new OkHttpClient.Builder()
                 .connectTimeout(TIMEOUT_CONNECT, TimeUnit.MILLISECONDS)
                 .cache(cache);
-
-        builder.interceptors().add(new Interceptor() {
-            @Override
-            public Response intercept(Chain chain) throws IOException {
-                Request originalRequest = chain.request();
-                Request.Builder builder = originalRequest.newBuilder();
-                builder.addHeader("User-Agent", "MJ_Android");
-                builder.addHeader("Cache-Control", "public, max-age=" + 60);
-                return chain.proceed(builder.build());
-            }
-        });
+//
+//        builder.interceptors().add(new Interceptor() {
+//            @Override
+//            public Response intercept(Chain chain) throws IOException {
+//                Request originalRequest = chain.request();
+//                Request.Builder builder = originalRequest.newBuilder();
+//                builder.addHeader("apikey", "f00c18d7afd240f8fac9f138219df794");
+//                builder.addHeader("User-Agent", "MJ_Android");
+//                builder.addHeader("Cache-Control", "public, max-age=" + 60);
+//                return chain.proceed(builder.build());
+//            }
+//        });
 
         // Add logging interceptor for every HTTP request in debug version.
         if (BuildConfig.DEBUG) {
             HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
             loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-            builder.interceptors().add(loggingInterceptor);
+            builder.addInterceptor(loggingInterceptor);
         }
 
         mRetrofit = new Retrofit.Builder()

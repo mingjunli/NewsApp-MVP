@@ -1,11 +1,14 @@
 package com.mingjun.news.ui.module.news;
 
+import com.mingjun.news.common.util.Debugger;
 import com.mingjun.news.data.NewsRepository;
 import com.mingjun.news.data.model.News;
+import com.mingjun.news.data.remote.rx.ResponseObserver;
 
 import java.util.ArrayList;
 
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
@@ -31,15 +34,26 @@ public class NewsListPresenter implements NewsContract.Presenter{
     @Override
     public void loadNews() {
         mNewsView.showLoading();
-        mDataSource.getNewsByCategory("popular", 1)
+        mSubscriptions.add(mDataSource.getNewsByCategory("popular", 1)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<ArrayList<News>>() {
+                .doOnTerminate(new Action0() {
                     @Override
-                    public void call(ArrayList<News> newsList) {
+                    public void call() {
+                        mNewsView.dismissLoading();
+                    }
+                })
+                .subscribe(new ResponseObserver<ArrayList<News>>() {
+                    @Override
+                    public void onError(int errorCode) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(ArrayList<News> newsList) {
                         mNewsView.showNews(newsList);
                     }
-                });
+                }));
     }
 
     @Override

@@ -3,6 +3,8 @@ package com.mingjun.news.data.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by mingjun on 16/6/28.
  */
@@ -18,7 +20,10 @@ public class News implements Parcelable {
 
     public String title;
     public String url;
+
+    @SerializedName("img")
     public String imgUrl;
+
     public String author;
     public long time;
 

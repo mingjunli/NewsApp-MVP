@@ -4,7 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:layout_margin="5dp"
     card_view:cardCornerRadius="4dp">
 
@@ -22,27 +22,27 @@
 
             <ImageView
                 android:id="@+id/image"
-                android:layout_width="64dp"
+                android:layout_width="100dp"
                 android:layout_height="64dp"
+                android:paddingRight="5dp"
                 android:scaleType="centerInside"
                 android:src="@mipmap/ic_launcher"
-                android:visibility="gone"/>
+                android:visibility="visible"/>
 
             <TextView
                 android:id="@+id/title"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:gravity="left|center_vertical"
+                android:gravity="left|top"
                 android:text="@string/app_name"
-                android:textColor="@android:color/holo_red_light"
+                android:textColor="@android:color/black"
                 android:textSize="18sp"/>
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="20dp"
             android:orientation="horizontal"
             android:layout_alignParentBottom="true"
             android:gravity="center_vertical">
@@ -54,7 +54,7 @@
                 android:layout_weight="1"
                 android:gravity="left|center_vertical"
                 android:textSize="10sp"
-                android:textColor="@android:color/holo_red_light"
+                android:textColor="@android:color/darker_gray"
                 android:text="@string/app_name"
                 />
 
@@ -64,7 +64,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="right|center_vertical"
                 android:textSize="10sp"
-                android:textColor="@android:color/holo_red_light"
+                android:textColor="@android:color/darker_gray"
                 android:text="@string/app_name"
                 />
 

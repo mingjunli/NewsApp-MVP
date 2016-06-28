@@ -2,6 +2,8 @@
 <manifest package="com.mingjun.news"
           xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:name=".NewsApplication_"
         android:allowBackup="true"

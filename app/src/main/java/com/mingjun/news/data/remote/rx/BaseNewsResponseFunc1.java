@@ -15,11 +15,17 @@ import rx.functions.Func1;
  */
 public class BaseNewsResponseFunc1 implements Func1<BaseResponse<NewsList>, Observable<ArrayList<News>>> {
     @Override
-    public Observable<ArrayList<News>> call(BaseResponse<NewsList> response) {
+    public Observable<ArrayList<News>> call(final BaseResponse<NewsList> response) {
         return Observable.create(new Observable.OnSubscribe<ArrayList<News>>() {
             @Override
             public void call(Subscriber<? super ArrayList<News>> subscriber) {
-
+                if (response == null) {
+                    subscriber.onError(new NullPointerException());
+                }
+                // TODO: To be fix
+                else if (0  == response.code) {
+                    subscriber.onNext(response.data.article);
+                }
             }
         });
     }
