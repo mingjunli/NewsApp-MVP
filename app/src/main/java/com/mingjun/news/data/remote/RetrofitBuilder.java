@@ -4,6 +4,8 @@ import android.os.Environment;
 
 import com.mingjun.news.BuildConfig;
 
+import org.androidannotations.annotations.EBean;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -21,6 +23,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * Created by mingjun on 16/6/28.
  */
+
+@EBean(scope = EBean.Scope.Singleton)
 public class RetrofitBuilder {
 
     private static final String END_POINT = "http://apis.baidu.com/";
