@@ -1,6 +1,7 @@
 package com.mingjun.news.data;
 
 import com.mingjun.news.data.model.News;
+import com.mingjun.news.data.model.NewsCategory;
 
 import java.util.ArrayList;
 
@@ -12,4 +13,6 @@ import rx.Observable;
 public interface NewsRepository {
 
     Observable<ArrayList<News>> getNewsByCategory(String category, int page);
+
+    Observable<ArrayList<NewsCategory>> getNewsCategories();
 }
