@@ -18,4 +18,6 @@ public class NewsActivity extends AppCompatActivity {
 
     @ViewById(R.id.content)
     ViewPager mContentViewPager;
+
+
 }

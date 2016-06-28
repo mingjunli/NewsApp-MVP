@@ -22,6 +22,10 @@ public interface NewsContract {
 
     interface View extends BaseView<Presenter> {
 
+        void showLoading();
+
+        void dismissLoading();
+
         void showNews(ArrayList<News> newsList);
     }
 }
