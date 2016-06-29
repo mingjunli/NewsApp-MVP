@@ -1,6 +1,6 @@
 package com.mingjun.news.data;
 
-import com.mingjun.news.data.remote.NewsRemoteDataSource;
+import com.mingjun.news.data.remote.NewsDataSource;
 
 /**
  * Created by mingjun on 16/6/29.
@@ -8,6 +8,6 @@ import com.mingjun.news.data.remote.NewsRemoteDataSource;
 public class RepositoryFactory {
 
     public static NewsRepository getNewsRepo() {
-        return NewsRemoteDataSource.getInstance();
+        return NewsDataSource.getInstance();
     }
 }

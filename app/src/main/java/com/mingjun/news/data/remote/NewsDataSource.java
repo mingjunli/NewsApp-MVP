@@ -1,6 +1,8 @@
 package com.mingjun.news.data.remote;
 
+import com.mingjun.news.NewsApplication;
 import com.mingjun.news.data.NewsRepository;
+import com.mingjun.news.data.db.DbFactory;
 import com.mingjun.news.data.model.News;
 import com.mingjun.news.data.model.NewsCategory;
 import com.mingjun.news.data.remote.rx.BaseNewsResponseFunc1;
@@ -8,23 +10,25 @@ import com.mingjun.news.data.remote.service.NewsService;
 
 import java.util.ArrayList;
 
+import io.realm.Realm;
+import io.realm.RealmResults;
 import rx.Observable;
 import rx.Subscriber;
 
 /**
  * Created by mingjun on 16/6/28.
  */
-public class NewsRemoteDataSource implements NewsRepository {
+public class NewsDataSource implements NewsRepository {
 
     private NewsService mNewsService;
-    private static NewsRemoteDataSource sInstance;
-    private NewsRemoteDataSource() {
+    private static NewsDataSource sInstance;
+    private NewsDataSource() {
         mNewsService = RetrofitBuilder.build().create(NewsService.class);
     }
 
-    public static NewsRemoteDataSource getInstance() {
+    public static NewsDataSource getInstance() {
         if (sInstance == null) {
-            sInstance = new NewsRemoteDataSource();
+            sInstance = new NewsDataSource();
         }
 
         return sInstance;
@@ -41,21 +45,23 @@ public class NewsRemoteDataSource implements NewsRepository {
         return Observable.create(new Observable.OnSubscribe<ArrayList<NewsCategory>>() {
             @Override
             public void call(Subscriber<? super ArrayList<NewsCategory>> subscriber) {
-                // for test now
-                ArrayList<NewsCategory> categories = new ArrayList<NewsCategory>();
-                NewsCategory popular = new NewsCategory("popular", "热点");
-                NewsCategory recomm = new NewsCategory("recomm", "推荐");
-                NewsCategory sports = new NewsCategory("sports", "体育");
-                NewsCategory tech = new NewsCategory("tech", "科技");
-                NewsCategory history = new NewsCategory("history", "历史");
 
-                categories.add(popular);
-                categories.add(recomm);
-                categories.add(sports);
-                categories.add(tech);
-                categories.add(history);
+                // query from db.
+                Realm realm = DbFactory.getRealm(NewsApplication.getInstance());
+                RealmResults<NewsCategory> result = realm.where(NewsCategory.class).findAll();
 
-                subscriber.onNext(categories);
+                if (result == null || result.size() == 0) {
+                    subscriber.onError(new NullPointerException());
+                }
+                else {
+                    ArrayList<NewsCategory> newsCategories = new ArrayList<>();
+                    for (NewsCategory newsCategory : result) {
+                        NewsCategory category = new NewsCategory(newsCategory.id, newsCategory.channel);
+                        newsCategories.add(category);
+                    }
+                    subscriber.onNext(newsCategories);
+                }
+
             }
         });
     }

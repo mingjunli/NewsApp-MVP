@@ -1,0 +1,130 @@
+[
+  {
+    "id": "popular",
+    "channel": "热点"
+  },
+  {
+    "id": "recomm",
+    "channel": "推荐"
+  },
+  {
+    "id": "ent",
+    "channel": "娱乐"
+  },
+  {
+    "id": "society",
+    "channel": "社会"
+  },
+  {
+    "id": "finance",
+    "channel": "财经"
+  },
+  {
+    "id": "sports",
+    "channel": "体育"
+  },
+  {
+    "id": "mil",
+    "channel": "军事"
+  },
+  {
+    "id": "health",
+    "channel": "健康"
+  },
+  {
+    "id": "tech",
+    "channel": "科技"
+  },
+  {
+    "id": "auto",
+    "channel": "汽车"
+  },
+  {
+    "id": "travel",
+    "channel": "旅游"
+  },
+  {
+    "id": "history",
+    "channel": "历史"
+  },
+  {
+    "id": "fashion",
+    "channel": "时尚"
+  },
+  {
+    "id": "couple",
+    "channel": "闺房"
+  },
+  {
+    "id": "game",
+    "channel": "游戏"
+  },
+  {
+    "id": "internet",
+    "channel": "互联网"
+  },
+  {
+    "id": "real",
+    "channel": "干货"
+  },
+  {
+    "id": "world",
+    "channel": "国际"
+  },
+  {
+    "id": "house",
+    "channel": "房产"
+  },
+  {
+    "id": "edu",
+    "channel": "教育"
+  },
+  {
+    "id": "baby",
+    "channel": "育儿"
+  },
+  {
+    "id": "anecdote",
+    "channel": "奇闻"
+  },
+  {
+    "id": "food",
+    "channel": "美食"
+  },
+  {
+    "id": "antique",
+    "channel": "文玩"
+  },
+  {
+    "id": "astro",
+    "channel": "星座"
+  },
+  {
+    "id": "comic",
+    "channel": "动漫"
+  },
+  {
+    "id": "shares",
+    "channel": "股票"
+  },
+  {
+    "id": "nba",
+    "channel": "NBA"
+  },
+  {
+    "id": "home",
+    "channel": "家居"
+  },
+  {
+    "id": "abroad",
+    "channel": "留学"
+  },
+  {
+    "id": "beauty",
+    "channel": "美容"
+  },
+  {
+    "id": "digital",
+    "channel": "数码"
+  }
+]
