@@ -8,7 +8,6 @@ import com.mingjun.news.R;
 import com.mingjun.news.common.util.Debugger;
 import com.mingjun.news.data.model.News;
 import com.mingjun.news.data.model.NewsCategory;
-import com.mingjun.news.data.remote.NewsRemoteDataSource;
 import com.mingjun.news.data.remote.NewsRemoteDataSource_;
 
 import org.androidannotations.annotations.AfterViews;
@@ -36,6 +35,9 @@ public class NewsFragment extends Fragment implements NewsContract.View {
 
     @AfterViews
     void init() {
+        mPresenter = new NewsListPresenter(
+                NewsRemoteDataSource_.getInstance_(this.getContext()), this, mCategory);
+
         mAdapter = new NewsRecyclerAdapter(null);
 
         mNewsListView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
@@ -66,8 +68,6 @@ public class NewsFragment extends Fragment implements NewsContract.View {
     @Override
     public void onResume() {
         super.onResume();
-        mPresenter = new NewsListPresenter(
-                NewsRemoteDataSource_.getInstance_(this.getContext()), this);
         mPresenter.subscribe();
     }
 
