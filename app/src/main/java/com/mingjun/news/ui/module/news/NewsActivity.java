@@ -1,42 +1,46 @@
 package com.mingjun.news.ui.module.news;
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.mingjun.news.R;
+import com.mingjun.news.data.NewsRepository;
+import com.mingjun.news.data.RepositoryFactory;
 import com.mingjun.news.data.model.NewsCategory;
-import com.mingjun.news.data.remote.NewsRemoteDataSource;
-
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.EBean;
-import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
-@EActivity(R.layout.activity_news)
 public class NewsActivity extends AppCompatActivity {
 
-    @ViewById(R.id.tabs)
+    @BindView(R.id.tabs)
     PagerSlidingTabStrip mTabs;
-
-    @ViewById(R.id.content)
+    @BindView(R.id.content)
     ViewPager mContentViewPager;
 
-    @Bean
-    NewsRemoteDataSource mDataSource;
-
+    private NewsRepository mDataSource;
     private NewsFragmentPageAdapter mPageAdapter;
 
-    @AfterViews
-    void init() {
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_news);
+        ButterKnife.bind(this);
+
+        mDataSource = RepositoryFactory.getNewsRepo();
+
+        initViews();
+    }
+
+    void initViews() {
         mPageAdapter = new NewsFragmentPageAdapter(getSupportFragmentManager());
         mContentViewPager.setAdapter(mPageAdapter);
     }

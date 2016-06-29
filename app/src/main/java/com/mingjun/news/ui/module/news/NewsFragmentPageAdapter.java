@@ -18,7 +18,7 @@ public class NewsFragmentPageAdapter extends ArrayFragmentPagerAdapter<NewsCateg
     @Override
     public Fragment getItem(int position) {
         NewsCategory category = mList.get(position);
-        return NewsFragment_.builder().mCategory(category).build();
+        return NewsFragment.newInstance(category);
     }
 
     @Override

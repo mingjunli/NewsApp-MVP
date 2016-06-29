@@ -4,17 +4,11 @@ import android.os.Environment;
 
 import com.mingjun.news.BuildConfig;
 
-import org.androidannotations.annotations.EBean;
-
 import java.io.File;
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Cache;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
@@ -24,7 +18,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by mingjun on 16/6/28.
  */
 
-@EBean(scope = EBean.Scope.Singleton)
 public class RetrofitBuilder {
 
     private static final String END_POINT = "http://apis.baidu.com/";
@@ -32,7 +25,7 @@ public class RetrofitBuilder {
 
     private static Retrofit mRetrofit;
 
-    public Retrofit build() {
+    public static Retrofit build() {
         if (mRetrofit != null) {
             return mRetrofit;
         }

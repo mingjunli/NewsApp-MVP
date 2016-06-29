@@ -1,43 +1,68 @@
 package com.mingjun.news.ui.module.news;
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.mingjun.news.R;
 import com.mingjun.news.common.util.Debugger;
+import com.mingjun.news.data.RepositoryFactory;
 import com.mingjun.news.data.model.News;
 import com.mingjun.news.data.model.NewsCategory;
-import com.mingjun.news.data.remote.NewsRemoteDataSource_;
-
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.EFragment;
-import org.androidannotations.annotations.FragmentArg;
-import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by mingjun on 16/6/28.
  */
-@EFragment(R.layout.fragment_news)
 public class NewsFragment extends Fragment implements NewsContract.View {
 
-    @FragmentArg
-    NewsCategory mCategory;
-
-    @ViewById(R.id.news_list)
+    @BindView(R.id.news_list)
     RecyclerView mNewsListView;
 
-    NewsRecyclerAdapter mAdapter;
-
+    private NewsRecyclerAdapter mAdapter;
     private NewsContract.Presenter mPresenter;
 
-    @AfterViews
-    void init() {
-        mPresenter = new NewsListPresenter(
-                NewsRemoteDataSource_.getInstance_(this.getContext()), this, mCategory);
+    public static final String ARGUMENT = "category";
+    private NewsCategory mCategory;
 
+    public static NewsFragment newInstance(NewsCategory category) {
+
+        NewsFragment fragment = new NewsFragment();
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(ARGUMENT, category);
+        fragment.setArguments(bundle);
+
+        return fragment;
+    }
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mCategory = getArguments().getParcelable(ARGUMENT);
+        mPresenter = new NewsListPresenter(RepositoryFactory.getNewsRepo(), this, mCategory);
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_news, null);
+        ButterKnife.bind(this, view);
+        initViews();
+        return view;
+    }
+
+    private void initViews() {
         mAdapter = new NewsRecyclerAdapter(null);
 
         mNewsListView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
