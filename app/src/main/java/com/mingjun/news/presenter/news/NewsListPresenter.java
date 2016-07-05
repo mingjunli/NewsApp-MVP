@@ -1,5 +1,7 @@
-package com.mingjun.news.ui.module.news;
+package com.mingjun.news.presenter.news;
 
+import com.mingjun.mvp.MvpPresenter;
+import com.mingjun.mvp.lce.LceView;
 import com.mingjun.news.data.NewsRepository;
 import com.mingjun.news.data.model.News;
 import com.mingjun.news.data.model.NewsCategory;
@@ -15,25 +17,20 @@ import rx.subscriptions.CompositeSubscription;
 /**
  * Created by mingjun on 16/6/28.
  */
-public class NewsListPresenter implements NewsContract.Presenter{
+public class NewsListPresenter<V extends LceView> implements MvpPresenter<V> {
 
     private final NewsRepository mDataSource;
     private final NewsCategory mNewsCategory;
 
-    private final NewsContract.View mNewsView;
+    private LceView mNewsView;
 
     private CompositeSubscription mSubscriptions;
 
-    public NewsListPresenter(NewsRepository dataSource, NewsContract.View view, NewsCategory category) {
+    public NewsListPresenter(NewsRepository dataSource, NewsCategory category) {
         this.mDataSource = dataSource;
-        this.mNewsView = view;
         this.mNewsCategory = category;
-
-        mSubscriptions = new CompositeSubscription();
-        mNewsView.setPresenter(this);
     }
 
-    @Override
     public void loadNews() {
         mNewsView.showLoading();
         mSubscriptions.add(mDataSource.getNewsByCategory(mNewsCategory.id, 1)
@@ -53,28 +50,20 @@ public class NewsListPresenter implements NewsContract.Presenter{
 
                     @Override
                     public void onSuccess(ArrayList<News> newsList) {
-                        mNewsView.showNews(newsList);
+                        mNewsView.showContent(newsList);
                     }
                 }));
     }
 
     @Override
-    public void loadMore() {
-
-    }
-
-    @Override
-    public void refresh() {
-
-    }
-
-    @Override
-    public void subscribe() {
+    public void attachView(V view) {
+        mNewsView = view;
+        mSubscriptions = new CompositeSubscription();
         loadNews();
     }
 
     @Override
-    public void unsubscribe() {
+    public void detachView() {
         mSubscriptions.clear();
     }
 }

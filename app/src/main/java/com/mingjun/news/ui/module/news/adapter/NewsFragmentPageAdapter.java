@@ -1,10 +1,11 @@
-package com.mingjun.news.ui.module.news;
+package com.mingjun.news.ui.module.news.adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
 import com.mingjun.news.data.model.NewsCategory;
 import com.mingjun.news.ui.base.adapter.ArrayFragmentPagerAdapter;
+import com.mingjun.news.ui.module.news.NewsFragment;
 
 /**
  * Created by mingjun on 16/6/28.

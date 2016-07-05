@@ -1,19 +1,24 @@
 package com.mingjun.news.ui.module.news;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.mingjun.mvp.MvpFragment;
+import com.mingjun.mvp.MvpPresenter;
+import com.mingjun.mvp.lce.LceView;
 import com.mingjun.news.R;
 import com.mingjun.news.common.util.Debugger;
 import com.mingjun.news.data.RepositoryFactory;
 import com.mingjun.news.data.model.News;
 import com.mingjun.news.data.model.NewsCategory;
+import com.mingjun.news.presenter.news.NewsListPresenter;
+import com.mingjun.news.ui.module.news.adapter.NewsRecyclerAdapter;
 
 import java.util.ArrayList;
 
@@ -23,13 +28,12 @@ import butterknife.ButterKnife;
 /**
  * Created by mingjun on 16/6/28.
  */
-public class NewsFragment extends Fragment implements NewsContract.View {
+public class NewsFragment extends MvpFragment implements LceView<ArrayList<News>> {
 
     @BindView(R.id.news_list)
     RecyclerView mNewsListView;
 
     private NewsRecyclerAdapter mAdapter;
-    private NewsContract.Presenter mPresenter;
 
     public static final String ARGUMENT = "category";
     private NewsCategory mCategory;
@@ -50,7 +54,6 @@ public class NewsFragment extends Fragment implements NewsContract.View {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mCategory = getArguments().getParcelable(ARGUMENT);
-        mPresenter = new NewsListPresenter(RepositoryFactory.getNewsRepo(), this, mCategory);
     }
 
     @Nullable
@@ -80,26 +83,19 @@ public class NewsFragment extends Fragment implements NewsContract.View {
     }
 
     @Override
-    public void showNews(ArrayList<News> newsList) {
-        Debugger.d("newsList = " + newsList.size());
-        mAdapter.setNewData(newsList);
+    public void showContent(ArrayList<News> data) {
+        Debugger.d("newsList = " + data.size());
+        mAdapter.setNewData(data);
     }
 
     @Override
-    public void setPresenter(NewsContract.Presenter presenter) {
-        mPresenter = presenter;
+    public void showError(Throwable e) {
+        Debugger.d("error: " + e);
     }
 
+    @NonNull
     @Override
-    public void onResume() {
-        super.onResume();
-        mPresenter.subscribe();
+    public MvpPresenter createPresenter() {
+        return new NewsListPresenter(RepositoryFactory.getNewsRepo(), mCategory);
     }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        mPresenter.unsubscribe();
-    }
-
 }

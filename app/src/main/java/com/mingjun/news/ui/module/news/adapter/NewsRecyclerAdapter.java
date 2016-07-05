@@ -1,4 +1,4 @@
-package com.mingjun.news.ui.module.news;
+package com.mingjun.news.ui.module.news.adapter;
 
 import android.text.TextUtils;
 import android.view.View;
