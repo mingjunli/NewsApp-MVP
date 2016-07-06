@@ -80,7 +80,4 @@ dependencies {
     // Glide for image loader
     // https://github.com/bumptech/glide
     compile 'com.github.bumptech.glide:glide:3.7.0'
-
-    // https://github.com/TheFinestArtist/FinestWebView-Android
-    compile 'com.thefinestartist:finestwebview:1.2.7'
 }

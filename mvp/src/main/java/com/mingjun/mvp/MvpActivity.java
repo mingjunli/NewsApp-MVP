@@ -16,7 +16,11 @@ public abstract class MvpActivity<V extends MvpView, P extends MvpPresenter<V>>
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
 
+    @Override
+    public void onAttachedToWindow() {
+        super.onAttachedToWindow();
         if (mPresenter == null) {
             mPresenter = createPresenter();
         }
@@ -26,11 +30,17 @@ public abstract class MvpActivity<V extends MvpView, P extends MvpPresenter<V>>
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
         if (mPresenter != null) {
             mPresenter.detachView();
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
     }
 
     @Override

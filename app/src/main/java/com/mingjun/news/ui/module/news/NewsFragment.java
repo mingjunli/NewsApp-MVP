@@ -20,8 +20,6 @@ import com.mingjun.news.data.model.News;
 import com.mingjun.news.data.model.NewsCategory;
 import com.mingjun.news.presenter.news.NewsListPresenter;
 import com.mingjun.news.ui.module.news.adapter.NewsRecyclerAdapter;
-import com.orhanobut.logger.Logger;
-import com.thefinestartist.finestwebview.FinestWebView;
 
 import java.util.ArrayList;
 
@@ -79,17 +77,9 @@ public class NewsFragment extends MvpFragment implements LceView<ArrayList<News>
     private BaseQuickAdapter.OnRecyclerViewItemClickListener mItemClickListener = new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
         @Override
         public void onItemClick(View view, int position) {
-            Debugger.d("onItemClick, position = " + position);
 
             News news = mAdapter.getItem(position);
-            new FinestWebView.Builder(getActivity())
-                    .titleDefault(news.title)
-                    .webViewBuiltInZoomControls(true)
-                    .webViewDisplayZoomControls(true)
-                    .dividerHeight(0)
-                    .gradientDivider(false)
-                    .setCustomAnimations(R.anim.activity_open_enter, R.anim.activity_open_exit, R.anim.activity_close_enter, R.anim.activity_close_exit)
-                    .show(news.url);
+            NewsDetailActivity.launch(getActivity(), news);
         }
     };
 
