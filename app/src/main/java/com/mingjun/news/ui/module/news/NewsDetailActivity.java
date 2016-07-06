@@ -10,13 +10,16 @@ import com.mingjun.mvp.MvpActivity;
 import com.mingjun.mvp.MvpPresenter;
 import com.mingjun.mvp.lce.LceView;
 import com.mingjun.news.R;
+import com.mingjun.news.common.util.Debugger;
+import com.mingjun.news.data.RepositoryFactory;
 import com.mingjun.news.data.model.News;
+import com.mingjun.news.data.model.NewsDetail;
 import com.mingjun.news.presenter.news.NewsDetailPresenter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class NewsDetailActivity extends MvpActivity implements LceView<News> {
+public class NewsDetailActivity extends MvpActivity implements LceView<NewsDetail> {
 
     @BindView(R.id.web_view)
     WebView mWebView;
@@ -43,7 +46,7 @@ public class NewsDetailActivity extends MvpActivity implements LceView<News> {
     @NonNull
     @Override
     public MvpPresenter createPresenter() {
-        return new NewsDetailPresenter(mNews);
+        return new NewsDetailPresenter(RepositoryFactory.getNewsRepo(), mNews);
     }
 
     @Override
@@ -57,8 +60,10 @@ public class NewsDetailActivity extends MvpActivity implements LceView<News> {
     }
 
     @Override
-    public void showContent(News data) {
-        mWebView.loadUrl(data.url);
+    public void showContent(NewsDetail data) {
+        Debugger.d("showContent detail.content = " + data.content);
+
+        mWebView.loadDataWithBaseURL("about:blank", data.content, "text/html", "utf-8", null);
     }
 
     @Override

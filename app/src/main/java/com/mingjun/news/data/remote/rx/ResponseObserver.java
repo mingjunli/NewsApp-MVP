@@ -21,7 +21,6 @@ public abstract class ResponseObserver<T> extends Subscriber<T> {
 
     @Override
     public void onNext(T t) {
-        Debugger.d("onNext:" + t);
         onSuccess(t);
     }
 

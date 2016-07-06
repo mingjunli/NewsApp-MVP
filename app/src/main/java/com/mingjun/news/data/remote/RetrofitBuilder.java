@@ -1,15 +1,5 @@
 package com.mingjun.news.data.remote;
 
-import android.os.Environment;
-
-import com.mingjun.news.BuildConfig;
-
-import java.io.File;
-import java.util.concurrent.TimeUnit;
-
-import okhttp3.Cache;
-import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -21,7 +11,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitBuilder {
 
     private static final String END_POINT = "http://apis.baidu.com/";
-    private static final long TIMEOUT_CONNECT = 30 * 1000;
 
     private static Retrofit mRetrofit;
 
@@ -30,36 +19,9 @@ public class RetrofitBuilder {
             return mRetrofit;
         }
 
-        File cacheDirectory = new File(Environment.getExternalStorageDirectory().getPath() + "/cic/CacheResponse.tmp");
-        int cacheSize = 10 * 1024 * 1024; // 10M
-        Cache cache = new Cache(cacheDirectory, cacheSize);
-
-        OkHttpClient.Builder builder = new OkHttpClient.Builder()
-                .connectTimeout(TIMEOUT_CONNECT, TimeUnit.MILLISECONDS)
-                .cache(cache);
-//
-//        builder.interceptors().add(new Interceptor() {
-//            @Override
-//            public Response intercept(Chain chain) throws IOException {
-//                Request originalRequest = chain.request();
-//                Request.Builder builder = originalRequest.newBuilder();
-//                builder.addHeader("apikey", "f00c18d7afd240f8fac9f138219df794");
-//                builder.addHeader("User-Agent", "MJ_Android");
-//                builder.addHeader("Cache-Control", "public, max-age=" + 60);
-//                return chain.proceed(builder.build());
-//            }
-//        });
-
-        // Add logging interceptor for every HTTP request in debug version.
-        if (BuildConfig.DEBUG) {
-            HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-            loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-            builder.addInterceptor(loggingInterceptor);
-        }
-
         mRetrofit = new Retrofit.Builder()
                 .baseUrl(END_POINT)
-                .client(builder.build())
+                .client(HttpClientBuilder.build())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
