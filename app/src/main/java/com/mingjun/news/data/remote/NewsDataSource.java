@@ -13,6 +13,9 @@ import com.mingjun.news.data.remote.service.NewsService;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import io.realm.Realm;
 import io.realm.RealmResults;
 import okhttp3.Request;
@@ -26,18 +29,11 @@ import rx.functions.Func1;
  */
 public class NewsDataSource implements NewsRepository {
 
-    private NewsService mNewsService;
-    private static NewsDataSource sInstance;
-    private NewsDataSource() {
-        mNewsService = RetrofitBuilder.build().create(NewsService.class);
-    }
+    NewsService mNewsService;
 
-    public static NewsDataSource getInstance() {
-        if (sInstance == null) {
-            sInstance = new NewsDataSource();
-        }
-
-        return sInstance;
+    @Inject
+    public NewsDataSource(NewsService service) {
+        this.mNewsService = service;
     }
 
     @Override

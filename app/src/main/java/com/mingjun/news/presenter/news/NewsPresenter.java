@@ -1,11 +1,16 @@
 package com.mingjun.news.presenter.news;
 
+import com.mingjun.mvp.BaseMvpPresenter;
 import com.mingjun.mvp.MvpPresenter;
 import com.mingjun.mvp.lce.LceView;
+import com.mingjun.news.common.util.Debugger;
 import com.mingjun.news.data.NewsRepository;
 import com.mingjun.news.data.model.NewsCategory;
+import com.mingjun.news.data.remote.NewsDataSource;
 
 import java.util.ArrayList;
+
+import javax.inject.Inject;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -15,39 +20,26 @@ import rx.subscriptions.CompositeSubscription;
 /**
  * Created by mingjun on 16/7/5.
  */
-public class NewsPresenter<V extends LceView> implements MvpPresenter<V> {
+public class NewsPresenter extends BaseMvpPresenter<LceView> {
 
     private final NewsRepository mDataSource;
 
-    private LceView mNewsView;
-
-    private CompositeSubscription mSubscriptions;
-
+    @Inject
     public NewsPresenter(NewsRepository dataSource) {
-        this.mDataSource = dataSource;
+        mDataSource = dataSource;
     }
 
-    void loadData() {
+    public void loadData() {
+        Debugger.d("loadData begin======");
         mDataSource.getNewsCategories()
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<ArrayList<NewsCategory>>() {
                     @Override
                     public void call(ArrayList<NewsCategory> newsCategories) {
-                        mNewsView.showContent(newsCategories);
+                        getMvpView().showContent(newsCategories);
                     }
                 });
     }
 
-    @Override
-    public void attachView(V view) {
-        mNewsView = view;
-        mSubscriptions = new CompositeSubscription();
-        loadData();
-    }
-
-    @Override
-    public void detachView() {
-        mSubscriptions.clear();
-    }
 }

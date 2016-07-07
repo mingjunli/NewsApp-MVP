@@ -1,7 +1,6 @@
 package com.mingjun.news.ui.module.news;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,18 +9,19 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.mingjun.mvp.MvpFragment;
-import com.mingjun.mvp.MvpPresenter;
 import com.mingjun.mvp.lce.LceView;
 import com.mingjun.news.R;
 import com.mingjun.news.common.util.Debugger;
-import com.mingjun.news.data.RepositoryFactory;
 import com.mingjun.news.data.model.News;
 import com.mingjun.news.data.model.NewsCategory;
+import com.mingjun.news.di.component.NewsComponent;
 import com.mingjun.news.presenter.news.NewsListPresenter;
+import com.mingjun.news.ui.base.BaseFragment;
 import com.mingjun.news.ui.module.news.adapter.NewsRecyclerAdapter;
 
 import java.util.ArrayList;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,7 +29,7 @@ import butterknife.ButterKnife;
 /**
  * Created by mingjun on 16/6/28.
  */
-public class NewsFragment extends MvpFragment implements LceView<ArrayList<News>> {
+public class NewsFragment extends BaseFragment implements LceView<ArrayList<News>> {
 
     @BindView(R.id.news_list)
     RecyclerView mNewsListView;
@@ -38,6 +38,8 @@ public class NewsFragment extends MvpFragment implements LceView<ArrayList<News>
 
     public static final String ARGUMENT = "category";
     private NewsCategory mCategory;
+
+    @Inject NewsListPresenter mNewsListPresenter;
 
     public static NewsFragment newInstance(NewsCategory category) {
 
@@ -50,11 +52,18 @@ public class NewsFragment extends MvpFragment implements LceView<ArrayList<News>
         return fragment;
     }
 
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getComponent(NewsComponent.class).inject(this);
+
         mCategory = getArguments().getParcelable(ARGUMENT);
+
+        Debugger.d("mNewsListPresenter:" + mNewsListPresenter);
+        if (mNewsListPresenter != null) {
+            mNewsListPresenter.attachView(this);
+            mNewsListPresenter.loadNewsList(mCategory);
+        }
     }
 
     @Nullable
@@ -64,6 +73,12 @@ public class NewsFragment extends MvpFragment implements LceView<ArrayList<News>
         ButterKnife.bind(this, view);
         initViews();
         return view;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mNewsListPresenter.detachView();
     }
 
     private void initViews() {
@@ -102,11 +117,5 @@ public class NewsFragment extends MvpFragment implements LceView<ArrayList<News>
     @Override
     public void showError(Throwable e) {
         Debugger.d("error: " + e);
-    }
-
-    @NonNull
-    @Override
-    public MvpPresenter createPresenter() {
-        return new NewsListPresenter(RepositoryFactory.getNewsRepo(), mCategory);
     }
 }
