@@ -60,10 +60,13 @@ public class NewsFragment extends BaseFragment implements LceView<ArrayList<News
         mCategory = getArguments().getParcelable(ARGUMENT);
 
         Debugger.d("mNewsListPresenter:" + mNewsListPresenter);
-        if (mNewsListPresenter != null) {
-            mNewsListPresenter.attachView(this);
-            mNewsListPresenter.loadNewsList(mCategory);
-        }
+        mNewsListPresenter.attachView(this);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mNewsListPresenter.loadNewsList(mCategory);
     }
 
     @Nullable

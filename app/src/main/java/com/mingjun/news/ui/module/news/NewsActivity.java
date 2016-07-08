@@ -74,6 +74,7 @@ public class NewsActivity extends BaseActivity implements LceView<ArrayList<News
     @Override
     public void showContent(ArrayList<NewsCategory> data) {
         mPageAdapter.setList(data);
+//        mContentViewPager.setOffscreenPageLimit(data.size());
         mTabs.setViewPager(mContentViewPager);
     }
 
